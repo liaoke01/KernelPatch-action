@@ -13,6 +13,7 @@ jobs:
 
     - name: Set up environment variables
       run: echo "PATCHVBMETAFLAG=true" >> $GITHUB_ENV
+           sudo apt-get update && sudo apt-get install -y aria2
       shell: bash
 
     - name: Load config variables
@@ -59,6 +60,7 @@ jobs:
             echo "Extracted $zip to current directory"
           fi
         done
+        ls
       shell: bash
 
     - name: Rename files
