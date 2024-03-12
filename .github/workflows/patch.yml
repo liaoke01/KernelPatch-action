@@ -53,6 +53,12 @@ jobs:
         wget -O kptools-linux $KP_TOOLS_URL
         wget -O boot.img $BOOT_URL
         chmod +x magiskboot kptools-linux
+        for zip in *.zip; do
+          if [ -f "$zip" ]; then
+            unzip -o "$zip" -d .
+            echo "Extracted $zip to current directory"
+          fi
+        done
       shell: bash
 
     - name: Rename files
