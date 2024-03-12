@@ -49,10 +49,10 @@ jobs:
 
     - name: Download files
       run: |
-        wget -O magiskboot $MAGISKBOOT_URL
-        wget -O kpimg-android $KP_IMG_URL
-        wget -O kptools-linux $KP_TOOLS_URL
-        wget -O boot.img $BOOT_URL
+        aria2c -o magiskboot $MAGISKBOOT_URL
+        aria2c -o kpimg-android $KP_IMG_URL
+        aria2c -o kptools-linux $KP_TOOLS_URL
+        aria2c -o boot.img $BOOT_URL
         chmod +x magiskboot kptools-linux
         for zip in *.zip; do
           if [ -f "$zip" ]; then
