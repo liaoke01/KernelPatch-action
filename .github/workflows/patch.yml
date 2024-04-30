@@ -2,7 +2,6 @@ name: Patch Workflow
 
 on:
   push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -14,8 +13,7 @@ jobs:
     - name: Set up environment variables
       run: echo "PATCHVBMETAFLAG=true" >> $GITHUB_ENV
            sudo apt-get update && sudo apt-get install -y aria2
-      shell: bash
-
+           
     - name: Load config variables
       id: config
       run: |
@@ -23,7 +21,6 @@ jobs:
           echo "Setting $line"
           echo "$line" >>$GITHUB_ENV
         done
-      shell: bash
 
     # 获取bmax121/kernelpatch仓库的最新tag标签
     - name: Get latest tag from bmax121/kernelpatch
@@ -36,7 +33,6 @@ jobs:
         echo "Latest tag is: $latest_tag"
         # 设置输出变量
         echo "::set-output name=tag::$latest_tag"
-      shell: bash
 
     # 使用获取到的最新tag来设置下载链接
     - name: Set download URLs with latest tag from bmax121/kernelpatch
@@ -45,11 +41,10 @@ jobs:
         echo "KP_TOOLS_URL=https://github.com/bmax121/KernelPatch/releases/download/${{ steps.latest_tag_kernelpatch.outputs.tag }}/kptools-linux" >>$GITHUB_ENV
         # 更新kpimg-android的下载链接
         echo "KP_IMG_URL=https://github.com/bmax121/KernelPatch/releases/download/${{ steps.latest_tag_kernelpatch.outputs.tag }}/kpimg-android" >>$GITHUB_ENV
-      shell: bash
 
     - name: Download files
       run: |
-        aria2c -o magiskboot $MAGISKBOOT_URL
+        aria2c -o magiskboot https://github.com/magojohnji/magiskboot-linux/blob/main/x86_64/magiskboot
         aria2c -o kpimg-android $KP_IMG_URL
         aria2c -o kptools-linux $KP_TOOLS_URL
         aria2c -o boot.img $BOOT_URL
@@ -61,14 +56,12 @@ jobs:
           fi
         done
         ls
-      shell: bash
 
     - name: Rename files
       run: |
         mv kptools-linux kptools
         mv kpimg-android kpimg
         chmod +x magiskboot kptools
-      shell: bash
 
     - name: Patch commands
       run: |
@@ -76,11 +69,9 @@ jobs:
         mv kernel kernel.ori
         ./kptools -p -i kernel.ori -k kpimg -s $SKEY -o kernel
         ./magiskboot repack boot.img
-      shell: bash
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: new-boot.img
         path: new-boot.img
-        retention-days: 1
