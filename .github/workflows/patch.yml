@@ -21,7 +21,7 @@ jobs:
          export $env_var_name="$latest_tag"
          }
 
-         set_latest_tag "bmax121/kernelpatch" "latest_tag"
+         set_latest_tag "bmax121/kernelpatch" "1"
          
     - name: Checkout
       uses: actions/checkout@v4.1.4
@@ -44,9 +44,9 @@ jobs:
     - name: Set download URLs with latest tag from bmax121/kernelpatch
       run: |
         # 更新kptools-linux的下载链接
-        echo "KP_TOOLS_URL=https://github.com/bmax121/KernelPatch/releases/download/${latest_tag}/kptools-linux" >>$GITHUB_ENV
+        echo "KP_TOOLS_URL=https://github.com/bmax121/KernelPatch/releases/download/${1}/kptools-linux" >>$GITHUB_ENV
         # 更新kpimg-android的下载链接
-        echo "KP_IMG_URL=https://github.com/bmax121/KernelPatch/releases/download/${latest_tag}/kpimg-android" >>$GITHUB_ENV
+        echo "KP_IMG_URL=https://github.com/bmax121/KernelPatch/releases/download/${1}/kpimg-android" >>$GITHUB_ENV
 
     - name: Download files
       run: |
