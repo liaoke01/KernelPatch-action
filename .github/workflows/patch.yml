@@ -42,7 +42,7 @@ jobs:
 
     - name: Download files
       run: |
-        aria2c -o magiskboot https://github.com/xiaoxindada/magiskboot_ndk_on_linux/releases/download/latest/magiskboot.7z
+        aria2c -o magiskboot https://github.com/xiaoxindada/magiskboot_ndk_on_linux/releases/latest/download/magiskboot.7z
         aria2c -o kpimg-android $KP_IMG_URL
         aria2c -o kptools-linux $KP_TOOLS_URL
         for 7z in *.7z; do
