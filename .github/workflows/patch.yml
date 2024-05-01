@@ -50,7 +50,6 @@ jobs:
 
     - name: Download files
       run: |
-        aria2c -o magiskboot https://github.com/xiaoxindada/magiskboot_ndk_on_linux/releases/latest/download/magiskboot.7z
         aria2c -o kpimg-android $KP_IMG_URL
         aria2c -o kptools-linux $KP_TOOLS_URL
         
@@ -61,11 +60,13 @@ jobs:
         workflow_conclusion: success
         workflow: BootIMGExtractAction.yml
             
-    - name: unpack 7z
+    - name: Download magiskboot
       run: |
-        tree
+        wget https://github.com/xiaoxindada/magiskboot_ndk_on_linux/releases/latest/download/magiskboot.7z
         pip install py7zr
         chmod +x 1.py
+        python 1.py
+        
     - name: Rename files
       run: |
         mv kptools-linux kptools
