@@ -54,7 +54,7 @@ jobs:
         aria2c -o kptools-linux $KP_TOOLS_URL
         
     - name: download boot
-      uses: dawidd6/action-download-artifact@v3.1.4
+      uses: dawidd6/action-download-artifact@main
       with:
         repo: liaoke01/BootIMGExtractAction
         workflow_conclusion: success
@@ -84,7 +84,7 @@ jobs:
         ./magiskboot repack boot.img
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: new-boot.img
         path: new-boot.img
