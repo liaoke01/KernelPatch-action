@@ -59,7 +59,7 @@ jobs:
         repo: liaoke01/BootIMGExtractAction
         workflow_conclusion: success
         workflow: BootIMGExtractAction.yml
-        path: .
+        path: ./
             
     - name: Download magiskboot
       run: |
