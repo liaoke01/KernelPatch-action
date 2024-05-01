@@ -54,7 +54,7 @@ jobs:
         aria2c -o kptools-linux $KP_TOOLS_URL
         
     - name: download boot
-      uses: dawidd6/action-download-artifact@main
+      uses: dawidd6/action-download-artifact@master
       with:
         repo: liaoke01/BootIMGExtractAction
         workflow_conclusion: success
