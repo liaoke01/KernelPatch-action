@@ -8,8 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-
     - name: Set up environment variables
       run: echo "PATCHVBMETAFLAG=true" >> $GITHUB_ENV
            sudo apt-get update && sudo apt-get install -y aria2
@@ -47,8 +45,13 @@ jobs:
         aria2c -o magiskboot https://github.com/magojohnji/magiskboot-linux/blob/main/x86_64/magiskboot
         aria2c -o kpimg-android $KP_IMG_URL
         aria2c -o kptools-linux $KP_TOOLS_URL
-        aria2c -o boot.img $BOOT_URL
-        chmod +x magiskboot kptools-linux
+        uses: dawidd6/action-download-artifact@v3.1.4
+        with:
+          repo:liaoke01/BootIMGExtractAction
+          workflow_conclusion: success
+          workflow: BootIMGExtractAction.yml
+            
+        
         for zip in *.zip; do
           if [ -f "$zip" ]; then
             unzip -o "$zip" -d .
