@@ -21,7 +21,7 @@ jobs:
          export $env_var_name="$latest_tag"
          }
 
-         set_latest_tag "bmax121/kernelpatch,1"
+         set_latest_tag "bmax121/kernelpatch" "a"
          
     - name: Checkout
       uses: actions/checkout@v4.1.4
