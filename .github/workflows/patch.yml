@@ -13,13 +13,14 @@ jobs:
            sudo apt-get update && sudo apt-get install -y aria2 tree
     - name: build function
       run: |
-         function get_latest_tag() {
+         function set_latest_tag() {
          local repo_url=\$1
-         local tag_variable_name=\$2
+         local env_var_name=\$2
          local latest_tag_response=$(curl -s https://api.github.com/repos/$repo_url/tags)
          local latest_tag=$(echo "$latest_tag_response" | grep -o '"name":.*' | head -n 1 | cut -d '"' -f 4)
-         echo "$tag_variable_name is $latest_tag"
-         }
+         export $env_var_name="$latest_tag"
+}
+
          get_latest_tag "bmax121/kernelpatch" "latest_tag"
          
     - name: Checkout
