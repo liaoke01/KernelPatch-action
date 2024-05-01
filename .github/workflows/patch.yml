@@ -11,6 +11,15 @@ jobs:
     - name: Set up environment variables
       run: echo "PATCHVBMETAFLAG=true" >> $GITHUB_ENV
            sudo apt-get update && sudo apt-get install -y aria2 tree
+    - name: build function
+      run: |
+         function get_latest_tag() {
+              local repo_url=\$1
+              local tag_variable_name=\$2
+
+              local latest_tag_response=$(curl -s https://api.github.com/repos/$repo_url/tags)
+              local $tag_variable_name=$(echo "$latest_tag_response" | grep -o '"name":.*' | head -n 1 | cut -d '"' -f 4)
+          }
 
     - name: Checkout
       uses: actions/checkout@v4.1.4
@@ -32,14 +41,8 @@ jobs:
     - name: Get latest tag from bmax121/kernelpatch
       id: latest_tag_kernelpatch
       run: |
-        # 使用GitHub API获取bmax121/kernelpatch的最新tag
-        latest_tag_response=$(curl -s https://api.github.com/repos/bmax121/kernelpatch/tags)
-        # 解析JSON响应以获取最新tag
-        latest_tag=$(echo "$latest_tag_response" | grep -o '"name":.*' | head -n 1 | cut -d '"' -f 4)
-        echo "Latest tag is: $latest_tag"
-        # 设置输出变量
-        echo "::set-output name=tag::$latest_tag"
-
+        get_latest_tag "bmax121/kernelpatch" "latest_tag"
+        
     # 使用获取到的最新tag来设置下载链接
     - name: Set download URLs with latest tag from bmax121/kernelpatch
       run: |
