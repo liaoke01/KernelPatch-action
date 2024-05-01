@@ -11,17 +11,7 @@ jobs:
     - name: Set up environment variables
       run: echo "PATCHVBMETAFLAG=true" >> $GITHUB_ENV
            sudo apt-get update && sudo apt-get install -y aria2 tree
-    - name: build function
-      run: |
-         function set_latest_tag() {
-         local repo_url=\$1
-         local env_var=\$2
-         local latest_tag_response=$(curl -s https://api.github.com/repos/$repo_url/tags)
-         local latest_tag=$(echo "$latest_tag_response" | grep -o '"name":.*' | head -n 1 | cut -d '"' -f 4)
-         export $env_var="$latest_tag"
-         }
-         set_latest_tag "bmax121/kernelpatch" "a"
-         
+
     - name: Checkout
       uses: actions/checkout@v4.1.4
 
@@ -38,14 +28,25 @@ jobs:
           echo "$line" >>$GITHUB_ENV
         done
 
-        
+    # 获取bmax121/kernelpatch仓库的最新tag标签
+    - name: Get latest tag from bmax121/kernelpatch
+      id: latest_tag_kernelpatch
+      run: |
+        # 使用GitHub API获取bmax121/kernelpatch的最新tag
+        latest_tag_response=$(curl -s https://api.github.com/repos/bmax121/kernelpatch/tags)
+        # 解析JSON响应以获取最新tag
+        latest_tag=$(echo "$latest_tag_response" | grep -o '"name":.*' | head -n 1 | cut -d '"' -f 4)
+        echo "Latest tag is: $latest_tag"
+        # 设置输出变量
+        echo "::set-output name=tag::$latest_tag"
+
     # 使用获取到的最新tag来设置下载链接
     - name: Set download URLs with latest tag from bmax121/kernelpatch
       run: |
         # 更新kptools-linux的下载链接
-        echo "KP_TOOLS_URL=https://github.com/bmax121/KernelPatch/releases/download/${1}/kptools-linux" >>$GITHUB_ENV
+        echo "KP_TOOLS_URL=https://github.com/bmax121/KernelPatch/releases/download/${{ steps.latest_tag_kernelpatch.outputs.tag }}/kptools-linux" >>$GITHUB_ENV
         # 更新kpimg-android的下载链接
-        echo "KP_IMG_URL=https://github.com/bmax121/KernelPatch/releases/download/${1}/kpimg-android" >>$GITHUB_ENV
+        echo "KP_IMG_URL=https://github.com/bmax121/KernelPatch/releases/download/${{ steps.latest_tag_kernelpatch.outputs.tag }}/kpimg-android" >>$GITHUB_ENV
 
     - name: Download files
       run: |
