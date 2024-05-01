@@ -66,7 +66,7 @@ jobs:
         pip install py7zr
         chmod +x 1.py
         python 1.py
-        
+        tree
     - name: Rename files
       run: |
         mv kptools-linux kptools
