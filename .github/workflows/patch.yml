@@ -28,7 +28,6 @@ jobs:
           echo "$line" >>$GITHUB_ENV
         done
 
-    # 获取bmax121/kernelpatch仓库的最新tag标签
     - name: Get latest tag from bmax121/kernelpatch
       id: latest_tag_kernelpatch
       run: |
@@ -40,7 +39,6 @@ jobs:
         # 设置输出变量
         echo "::set-output name=tag::$latest_tag"
 
-    # 使用获取到的最新tag来设置下载链接
     - name: Set download URLs with latest tag from bmax121/kernelpatch
       run: |
         # 更新kptools-linux的下载链接
